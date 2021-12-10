@@ -1,9 +1,6 @@
 import '@nomiclabs/hardhat-ethers';
-import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
-import 'hardhat-gas-reporter';
-import 'solidity-coverage';
 
 import * as dotenv from 'dotenv';
 
@@ -27,6 +24,9 @@ const config: any = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
+  },
+  typechain: {
+    outDir: './generated',
   },
 };
 
