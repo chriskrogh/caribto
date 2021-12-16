@@ -1,9 +1,20 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
+import Header from '../src/components/Header';
+import Page from '../src/components/Page';
+import Spacer from '../src/components/Spacer';
+import { isMobile } from '../src/utils/isMobile';
+
+const DynamicMobileSection = dynamic(() => import('./landing/Mobile'));
+const DynamicDesktopSection = dynamic(() => import('./landing/Desktop'));
+
 const Home: NextPage = () => {
+  const isMobileDevice = isMobile();
+
   return (
-    <div>
+    <>
       <Head>
         <title>Caribto</title>
         <meta
@@ -12,7 +23,12 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    </div>
+      <Page>
+        <Header />
+        <Spacer height={16} />
+        {isMobileDevice ? <DynamicMobileSection /> : <DynamicDesktopSection />}
+      </Page>
+    </>
   );
 };
 
