@@ -9,12 +9,13 @@ import Typography from '../Typography';
 const IMAGE_SIZE = 32;
 
 const Container = styled(Row)`
-  padding: 16px;
+  padding: 16px 16px 0;
+  flex: 0 1 ${IMAGE_SIZE}px;
 `;
 
 const Header: React.FC = () => {
   return (
-    <Container justifyContent="space-between" alignItems="center" fullWidth>
+    <Container justifyContent="space-between" alignItems="center">
       <Row>
         <Image
           src="/assets/palm-tree-small.png"
