@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Currency, isFiat } from '../../../../utils/Currency';
+import { Currency } from '../../../../utils/Currency';
 import { buildFormatter } from '../../../../utils/money';
 import Row from '../../../Row';
 import Typography from '../../../Typography';
