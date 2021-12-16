@@ -6,13 +6,13 @@ import LineItem from './LineItem';
 
 type Props = {
   amount: number;
-  buyingCurrency: Currency;
+  currentCurrency: Currency;
   desiredCurrency: Currency;
 };
 
 const Summary: React.FC<Props> = ({
   amount,
-  buyingCurrency,
+  currentCurrency,
   desiredCurrency,
 }) => {
   /** This should be pulled from somwehere */
@@ -33,11 +33,11 @@ const Summary: React.FC<Props> = ({
       <LineItem
         title={`${desiredCurrency} price`}
         amount={price}
-        currency={buyingCurrency}
+        currency={currentCurrency}
       />
       <LineItem title="Processing fee" {...processingFee} />
       <LineItem title="You get" amount={youGet} currency={desiredCurrency} />
-      <LineItem title="Total" amount={total} currency={buyingCurrency} bold />
+      <LineItem title="Total" amount={total} currency={currentCurrency} bold />
     </Column>
   );
 };
