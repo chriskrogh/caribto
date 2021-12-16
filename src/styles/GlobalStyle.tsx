@@ -4,21 +4,21 @@ const GlobalStyle = createGlobalStyle`
   h1 {
     font-family: Inter;
     font-size: 52px;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 60px;
     letter-spacing: 3;
   }
   h2 {
     font-family: Inter;
     font-size: 44px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 50px;
     letter-spacing: 2;
   }
   h3 {
     font-family: Inter;
     font-size: 36px;
-    font-weight: 300;
+    font-weight: 500;
     line-height: 44px;
     letter-spacing: 1;
   }
