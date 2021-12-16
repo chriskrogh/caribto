@@ -13,16 +13,13 @@ const Container = styled(Column)`
 const Mobile: NextPage = () => {
   return (
     <Container alignItems="center">
-      <Column justifyContent="center" alignItems="center" fullWidth>
-        <Typography as="h1" center>
-          Crypto for the Caribbean
-        </Typography>
-        <Spacer height={16} />
-        <Typography as="h5" center>
-          Buy and sell crypto using your local currency.
-        </Typography>
-      </Column>
-      <Column justifyContent="center" alignItems="center" fullWidth></Column>
+      <Typography as="h1" center>
+        Crypto for the Caribbean
+      </Typography>
+      <Spacer height={16} />
+      <Typography as="h5" center>
+        Buy and sell crypto using your local currency.
+      </Typography>
     </Container>
   );
 };

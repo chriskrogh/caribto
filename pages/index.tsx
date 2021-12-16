@@ -25,7 +25,7 @@ const Home: NextPage = () => {
       </Head>
       <Page>
         <Header />
-        <Spacer height={16} />
+        <Spacer height={isMobileDevice ? 32 : 16} />
         {isMobileDevice ? <DynamicMobileSection /> : <DynamicDesktopSection />}
       </Page>
     </>
