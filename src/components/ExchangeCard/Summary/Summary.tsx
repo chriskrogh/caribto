@@ -25,8 +25,8 @@ const Summary: React.FC<Props> = ({
    * user currency and the desired currency */
   const price = 1;
 
-  const total = amount * price;
-  const youGet = Math.max(total - processingFee.amount, 0);
+  const subtotal = amount * price;
+  const total = subtotal + processingFee.amount;
 
   return (
     <Column fullWidth>
@@ -36,7 +36,7 @@ const Summary: React.FC<Props> = ({
         currency={currentCurrency}
       />
       <LineItem title="Processing fee" {...processingFee} />
-      <LineItem title="You get" amount={youGet} currency={desiredCurrency} />
+      <LineItem title="You get" amount={subtotal} currency={desiredCurrency} />
       <LineItem title="Total" amount={total} currency={currentCurrency} bold />
     </Column>
   );
