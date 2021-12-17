@@ -1,7 +1,10 @@
+import { ethers } from 'ethers';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { useTokenContract } from '../../hooks/useTokenContract';
+import { COLORS } from '../../utils/colors';
 import Button from '../Button';
 import Clickable from '../Clickable';
 import Column from '../Column';
@@ -10,7 +13,7 @@ import Spacer from '../Spacer';
 import TextInput from '../TextInput/TextInput';
 import Typography from '../Typography';
 import Summary from './Summary/Summary';
-import { validationSchema } from './validationSchema';
+import { validationSchema } from './validation';
 
 const SIDE_PADDING = 32;
 
@@ -37,12 +40,36 @@ const ExchangeCard: React.FC = () => {
   const setBuy = () => setAction('buy');
   const setSell = () => setAction('sell');
 
+  const {
+    mintTokens,
+    requestApproval,
+    burnTokens,
+    loading,
+    approved,
+    success,
+  } = useTokenContract();
+
+  const submit = async (values: FormValues) => {
+    const { amount, walletAddress } = values;
+    const formattedAmount = ethers.utils.parseEther(amount.toString());
+    try {
+      if (action === 'buy') {
+        await mintTokens(walletAddress, formattedAmount);
+      } else if (action === 'sell') {
+        if (!approved) {
+          await requestApproval(walletAddress, formattedAmount);
+        } else {
+          await burnTokens(walletAddress, formattedAmount);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /** User should be able to choose these */
   const currentCurrency = action === 'buy' ? 'TTD' : 'TTC';
   const desiredCurrency = action === 'buy' ? 'TTC' : 'TTD';
-
-  const submit = (values: FormValues) => {
-    console.log(values);
-  };
 
   return (
     <Container>
@@ -73,6 +100,7 @@ const ExchangeCard: React.FC = () => {
                 {desiredCurrency}/{currentCurrency}
               </Typography>
             </Row>
+            <Spacer height={4} />
             <TextInput
               onChange={handleChange('amount')}
               onBlur={handleBlur('amount')}
@@ -83,13 +111,14 @@ const ExchangeCard: React.FC = () => {
             {errors.amount && (
               <>
                 <Spacer height={4} />
-                <Typography as="p" error>
+                <Typography as="p" color={COLORS.error}>
                   {errors.amount}
                 </Typography>
               </>
             )}
             <Spacer height={16} />
             <Typography as="p">Wallet address</Typography>
+            <Spacer height={4} />
             <TextInput
               onChange={handleChange('walletAddress')}
               onBlur={handleBlur('walletAddress')}
@@ -100,7 +129,7 @@ const ExchangeCard: React.FC = () => {
             {errors.walletAddress && (
               <>
                 <Spacer height={4} />
-                <Typography as="p" error>
+                <Typography as="p" color={COLORS.error}>
                   {errors.walletAddress}
                 </Typography>
               </>
@@ -108,7 +137,7 @@ const ExchangeCard: React.FC = () => {
             <Spacer height={16} />
             <Summary
               {...{
-                amount: parseFloat(values.amount) || 0,
+                amount: Number(values.amount) || 0,
                 currentCurrency,
                 desiredCurrency,
               }}
@@ -119,6 +148,8 @@ const ExchangeCard: React.FC = () => {
                 <>
                   <Button
                     onClick={handleSubmit as () => void}
+                    type="submit"
+                    disabled={loading}
                     fullWidth
                     secondary
                   >
@@ -127,13 +158,26 @@ const ExchangeCard: React.FC = () => {
                   <Spacer width={16} />
                 </>
               )}
-              <Button onClick={handleSubmit as () => void} fullWidth>
+              <Button
+                onClick={handleSubmit as () => void}
+                type="submit"
+                disabled={loading}
+                fullWidth
+              >
                 {`${action === 'sell' ? '2. ' : ''}Confirm`}
               </Button>
             </Row>
           </>
         )}
       </Formik>
+      <Spacer height={16} />
+      {success && (
+        <Column alignItems="center" fullWidth>
+          <Typography as="p" color={COLORS.success}>
+            Your transaction was successful!
+          </Typography>
+        </Column>
+      )}
     </Container>
   );
 };
