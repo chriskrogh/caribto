@@ -21,8 +21,9 @@ const Mobile: NextPage = () => {
       <Typography as="h5" center>
         Buy and sell crypto using your local currency.
       </Typography>
-      <Spacer height={16} />
+      <Spacer height={32} />
       <ExchangeCard />
+      <Spacer height={32} />
     </Container>
   );
 };
