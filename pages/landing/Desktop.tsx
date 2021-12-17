@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 import Column from '../../src/components/Column';
+import ExchangeCard from '../../src/components/ExchangeCard';
 import Row from '../../src/components/Row';
 import Spacer from '../../src/components/Spacer';
 import Typography from '../../src/components/Typography';
@@ -32,7 +33,7 @@ const Desktop: NextPage = () => {
         <Typography as="h5" center>
           Buy and sell crypto using your local currency.
         </Typography>
-        <Spacer height={16} />
+        <Spacer height={32} />
         <Image
           src="/assets/crypto.png"
           width={IMAGE_SIZE}
@@ -41,11 +42,9 @@ const Desktop: NextPage = () => {
           priority
         />
       </SemiContainer>
-      <SemiContainer
-        justifyContent="center"
-        alignItems="center"
-        fullWidth
-      ></SemiContainer>
+      <SemiContainer justifyContent="center" alignItems="center" fullWidth>
+        <ExchangeCard />
+      </SemiContainer>
     </Container>
   );
 };

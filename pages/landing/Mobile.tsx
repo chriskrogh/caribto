@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import styled from 'styled-components';
 
 import Column from '../../src/components/Column';
+import ExchangeCard from '../../src/components/ExchangeCard';
 import Spacer from '../../src/components/Spacer';
 import Typography from '../../src/components/Typography';
 
@@ -20,6 +21,8 @@ const Mobile: NextPage = () => {
       <Typography as="h5" center>
         Buy and sell crypto using your local currency.
       </Typography>
+      <Spacer height={16} />
+      <ExchangeCard />
     </Container>
   );
 };
