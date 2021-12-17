@@ -17,7 +17,7 @@ const Summary: React.FC<Props> = ({
 }) => {
   /** This should be pulled from somwehere */
   const processingFee: { amount: number; currency: Currency } = {
-    amount: 3,
+    amount: 0,
     currency: 'TTD',
   };
 
