@@ -60,12 +60,6 @@ const ExchangeCard: React.FC = () => {
         </Clickable>
       </Row>
       <Spacer height={16} />
-      <Row justifyContent="space-between" fullWidth>
-        <Typography as="p">Amount</Typography>
-        <Typography as="p">
-          {desiredCurrency}/{currentCurrency}
-        </Typography>
-      </Row>
       <Formik
         validationSchema={validationSchema}
         initialValues={initialFormValues}
@@ -73,6 +67,12 @@ const ExchangeCard: React.FC = () => {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <>
+            <Row justifyContent="space-between" fullWidth>
+              <Typography as="p">Amount</Typography>
+              <Typography as="p">
+                {desiredCurrency}/{currentCurrency}
+              </Typography>
+            </Row>
             <TextInput
               onChange={handleChange('amount')}
               onBlur={handleBlur('amount')}
@@ -89,10 +89,11 @@ const ExchangeCard: React.FC = () => {
               </>
             )}
             <Spacer height={16} />
+            <Typography as="p">Wallet address</Typography>
             <TextInput
               onChange={handleChange('walletAddress')}
               onBlur={handleBlur('walletAddress')}
-              placeholder="0x..."
+              placeholder="0x... or .eth"
               type="text"
               fullWidth
             />
@@ -113,9 +114,23 @@ const ExchangeCard: React.FC = () => {
               }}
             />
             <Spacer height={32} />
-            <Button onClick={handleSubmit as () => void} fullWidth>
-              Continue
-            </Button>
+            <Row fullWidth>
+              {action === 'sell' && (
+                <>
+                  <Button
+                    onClick={handleSubmit as () => void}
+                    fullWidth
+                    secondary
+                  >
+                    1. Approve
+                  </Button>
+                  <Spacer width={16} />
+                </>
+              )}
+              <Button onClick={handleSubmit as () => void} fullWidth>
+                {`${action === 'sell' ? '2. ' : ''}Confirm`}
+              </Button>
+            </Row>
           </>
         )}
       </Formik>
