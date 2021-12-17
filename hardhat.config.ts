@@ -12,15 +12,16 @@ dotenv.config();
 const config: any = {
   solidity: '0.8.4',
   networks: {
-    localhost: {
-      mumbai: {
-        url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_CLIENT_ID}/polygon/mumbai`,
-        accounts: [process.env.WALLET_PRIVATE_KEY],
-      },
-      mainnet: {
-        url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_CLIENT_ID}/polygon/mainnet`,
-        accounts: [process.env.WALLET_PRIVATE_KEY],
-      },
+    hardhat: {
+      chainId: 1337,
+    },
+    mumbai: {
+      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_CLIENT_ID}/polygon/mumbai`,
+      accounts: [process.env.WALLET_PRIVATE_KEY],
+    },
+    mainnet: {
+      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_CLIENT_ID}/polygon/mainnet`,
+      accounts: [process.env.WALLET_PRIVATE_KEY],
     },
   },
   gasReporter: {
