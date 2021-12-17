@@ -16,13 +16,16 @@ import Typography from '../Typography';
 import Summary from './Summary/Summary';
 import { validationSchema } from './validation';
 
-const SIDE_PADDING = 32;
-
 const Container = styled(Column)`
-  padding: ${SIDE_PADDING}px 32px;
-  width: min(calc(100% - ${2 * SIDE_PADDING}px), 430px);
+  padding: 32px;
+  width: min(calc(100% - 64px), 430px);
   background-color: rgba(255, 255, 255, 0.12);
   border-radius: 16px;
+
+  @media screen and (max-width: 800px) {
+    padding: 16px;
+    width: calc(100% - 32px);
+  }
 `;
 
 const DOT_SIZE = 12;
@@ -179,7 +182,7 @@ const ExchangeCard: React.FC = () => {
               <Button
                 onClick={handleSubmit as () => void}
                 type="submit"
-                disabled={loading}
+                disabled={loading || (action === 'sell' && !approved)}
                 fullWidth
               >
                 {`${action === 'sell' ? '2. ' : ''}Confirm`}
@@ -188,13 +191,15 @@ const ExchangeCard: React.FC = () => {
           </>
         )}
       </Formik>
-      <Spacer height={16} />
       {success && (
-        <Column alignItems="center" fullWidth>
-          <Typography as="p" color={COLORS.success}>
-            Your transaction was successful!
-          </Typography>
-        </Column>
+        <>
+          <Spacer height={16} />
+          <Column alignItems="center" fullWidth>
+            <Typography as="p" color={COLORS.success}>
+              Your transaction was successful!
+            </Typography>
+          </Column>
+        </>
       )}
     </Container>
   );
