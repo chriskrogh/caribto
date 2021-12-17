@@ -107,7 +107,7 @@ const ExchangeCard: React.FC = () => {
             <Spacer height={16} />
             <Summary
               {...{
-                amount: parseFloat(values.amount),
+                amount: parseFloat(values.amount) || 0,
                 currentCurrency,
                 desiredCurrency,
               }}
