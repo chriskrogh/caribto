@@ -58,7 +58,9 @@ const ExchangeCard: React.FC = () => {
     success,
   } = useTokenContract();
 
-  const submit = async (values: FormValues) => {
+  const initialFormValues: FormValues = { amount: '', walletAddress: address };
+
+  const submit = async (values: FormValues, { resetForm }) => {
     const { amount, walletAddress } = values;
     const formattedAmount = ethers.utils.parseEther(amount.toString());
     try {
@@ -71,6 +73,7 @@ const ExchangeCard: React.FC = () => {
           await burnTokens(walletAddress, formattedAmount);
         }
       }
+      resetForm(initialFormValues);
     } catch (error) {
       console.error(error);
     }
@@ -98,7 +101,7 @@ const ExchangeCard: React.FC = () => {
       <Spacer height={16} />
       <Formik
         validationSchema={validationSchema}
-        initialValues={{ amount: '', walletAddress: address }}
+        initialValues={initialFormValues}
         onSubmit={submit}
         enableReinitialize
       >
@@ -130,13 +133,15 @@ const ExchangeCard: React.FC = () => {
             <Spacer height={16} />
             <Row justifyContent="space-between" fullWidth>
               <Typography as="p">Wallet Address</Typography>
-              <Row alignItems="center">
-                <ConnectedDot />
-                <Spacer width={8} />
-                <Typography as="p" secondary>
-                  Connected
-                </Typography>
-              </Row>
+              {address && (
+                <Row alignItems="center">
+                  <ConnectedDot />
+                  <Spacer width={8} />
+                  <Typography as="p" secondary>
+                    Connected
+                  </Typography>
+                </Row>
+              )}
             </Row>
             <Spacer height={4} />
             <TextInput
@@ -170,7 +175,7 @@ const ExchangeCard: React.FC = () => {
                   <Button
                     onClick={handleSubmit as () => void}
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || approved}
                     fullWidth
                     secondary
                   >
