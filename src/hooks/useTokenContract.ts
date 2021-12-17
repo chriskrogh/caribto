@@ -4,9 +4,14 @@ import { useState } from 'react';
 import TokenArtifact from '../../artifacts/contracts/Token.sol/Token.json';
 import { Token as TokenContract } from '../../generated/Token';
 
-const buildTokenContract = (): TokenContract => {
-  if (typeof window !== 'undefined') {
-    const provider = new ethers.providers.JsonRpcProvider();
+const buildTokenContract = (
+  signer: 'default' | 'web3',
+): TokenContract | undefined => {
+  if (typeof window !== 'undefined' && window.ethereum) {
+    const provider =
+      signer === 'default'
+        ? new ethers.providers.JsonRpcProvider()
+        : new ethers.providers.Web3Provider(window.ethereum);
     return new ethers.Contract(
       process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
       TokenArtifact.abi,
@@ -36,11 +41,12 @@ export const useTokenContract = (): HookReturn => {
     }, 5000);
   };
 
-  const contract = buildTokenContract();
+  const jsonRpcContract = buildTokenContract('default');
+  const web3Contract = buildTokenContract('web3');
 
   const mintTokens = async (address: string, amount: BigNumber) => {
     setLoading(true);
-    const mintTransaction = await contract.mint(address, amount);
+    const mintTransaction = await jsonRpcContract.mint(address, amount);
     await mintTransaction.wait();
     if (mintTransaction.blockHash) {
       handleSuccess();
@@ -50,22 +56,18 @@ export const useTokenContract = (): HookReturn => {
 
   const requestApproval = async (address: string, amount: BigNumber) => {
     setLoading(true);
-    const approveTransaction = await contract.approve(address, amount);
+    const approveTransaction = await web3Contract.approve(address, amount);
     await approveTransaction.wait();
-    if (approveTransaction.blockHash) {
-      setApproved(true);
-    }
+    setApproved(true);
     setLoading(false);
   };
 
   const burnTokens = async (address: string, amount: BigNumber) => {
     setLoading(true);
-    const burnTransaction = await contract.burnFrom(address, amount);
+    const burnTransaction = await web3Contract.burnFrom(address, amount);
     await burnTransaction.wait();
-    if (burnTransaction.blockHash) {
-      setApproved(false);
-      handleSuccess();
-    }
+    setApproved(false);
+    handleSuccess();
     setLoading(false);
   };
 
