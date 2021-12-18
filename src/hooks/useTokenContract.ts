@@ -5,25 +5,26 @@ import TokenArtifact from '../../artifacts/contracts/Token.sol/Token.json';
 import { Token as TokenContract } from '../../generated/Token';
 
 const buildTokenContract = (
-  signer: 'default' | 'web3',
-): TokenContract | undefined => {
-  if (typeof window !== 'undefined' && window.ethereum) {
-    const provider =
-      signer === 'default'
-        ? new ethers.providers.JsonRpcProvider()
-        : new ethers.providers.Web3Provider(window.ethereum);
-    return new ethers.Contract(
-      process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
-      TokenArtifact.abi,
-      provider.getSigner(),
-    ) as TokenContract;
-  }
-};
+  provider: ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider,
+): TokenContract | undefined =>
+  new ethers.Contract(
+    process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
+    TokenArtifact.abi,
+    provider.getSigner(),
+  ) as TokenContract;
 
 type HookReturn = {
   mintTokens: (address: string, amount: BigNumber) => Promise<void>;
-  requestApproval: (address: string, amount: BigNumber) => Promise<void>;
-  burnTokens: (address: string, amount: BigNumber) => Promise<void>;
+  requestApproval: (
+    provider: ethers.providers.Web3Provider,
+    address: string,
+    amount: BigNumber,
+  ) => Promise<void>;
+  burnTokens: (
+    provider: ethers.providers.Web3Provider,
+    address: string,
+    amount: BigNumber,
+  ) => Promise<void>;
   loading: boolean;
   approved: boolean;
   success: boolean;
@@ -41,12 +42,10 @@ export const useTokenContract = (): HookReturn => {
     }, 5000);
   };
 
-  const jsonRpcContract = buildTokenContract('default');
-  const web3Contract = buildTokenContract('web3');
-
   const mintTokens = async (address: string, amount: BigNumber) => {
     setLoading(true);
-    const mintTransaction = await jsonRpcContract.mint(address, amount);
+    const contract = buildTokenContract(new ethers.providers.JsonRpcProvider());
+    const mintTransaction = await contract.mint(address, amount);
     await mintTransaction.wait();
     if (mintTransaction.blockHash) {
       handleSuccess();
@@ -54,17 +53,27 @@ export const useTokenContract = (): HookReturn => {
     setLoading(false);
   };
 
-  const requestApproval = async (address: string, amount: BigNumber) => {
+  const requestApproval = async (
+    provider: ethers.providers.Web3Provider,
+    address: string,
+    amount: BigNumber,
+  ) => {
     setLoading(true);
-    const approveTransaction = await web3Contract.approve(address, amount);
+    const contract = buildTokenContract(provider);
+    const approveTransaction = await contract.approve(address, amount);
     await approveTransaction.wait();
     setApproved(true);
     setLoading(false);
   };
 
-  const burnTokens = async (address: string, amount: BigNumber) => {
+  const burnTokens = async (
+    provider: ethers.providers.Web3Provider,
+    address: string,
+    amount: BigNumber,
+  ) => {
     setLoading(true);
-    const burnTransaction = await web3Contract.burnFrom(address, amount);
+    const contract = buildTokenContract(provider);
+    const burnTransaction = await contract.burnFrom(address, amount);
     await burnTransaction.wait();
     setApproved(false);
     handleSuccess();

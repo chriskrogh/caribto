@@ -1,7 +1,9 @@
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers } from 'ethers';
 import { Formik } from 'formik';
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import Web3Modal from 'web3modal';
 
 import { WalletContext } from '../../contexts/wallet';
 import { useTokenContract } from '../../hooks/useTokenContract';
@@ -41,6 +43,33 @@ type FormValues = {
   walletAddress: string;
 };
 
+const connectWallet = async (): Promise<
+  ethers.providers.Web3Provider | undefined
+> => {
+  try {
+    if (typeof window !== undefined && window.ethereum) {
+      return new ethers.providers.Web3Provider(window.ethereum);
+    } else {
+      const web3Modal = new Web3Modal({
+        network: 'mainnet', // optional
+        cacheProvider: true, // optional
+        providerOptions: {
+          walletconnect: {
+            package: WalletConnectProvider, // required
+            options: {
+              infuraId: process.env.NEXT_PUBLIC_INFURA_ID, // required
+            },
+          },
+        },
+      });
+      const provider = await web3Modal.connect();
+      return new ethers.providers.Web3Provider(provider);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const ExchangeCard: React.FC = () => {
   const { address } = useContext(WalletContext);
 
@@ -67,10 +96,12 @@ const ExchangeCard: React.FC = () => {
       if (action === 'buy') {
         await mintTokens(walletAddress, formattedAmount);
       } else if (action === 'sell') {
+        const provider = await connectWallet();
+        if (!provider) throw new Error();
         if (!approved) {
-          await requestApproval(walletAddress, formattedAmount);
+          await requestApproval(provider, walletAddress, formattedAmount);
         } else {
-          await burnTokens(walletAddress, formattedAmount);
+          await burnTokens(provider, walletAddress, formattedAmount);
         }
       }
       resetForm(initialFormValues);
@@ -144,14 +175,21 @@ const ExchangeCard: React.FC = () => {
               )}
             </Row>
             <Spacer height={4} />
-            <TextInput
-              onChange={handleChange('walletAddress')}
-              onBlur={handleBlur('walletAddress')}
-              value={values.walletAddress}
-              placeholder="0x... or .eth"
-              type="text"
-              fullWidth
-            />
+            {action === 'sell' && !address ? (
+              <Button onClick={connectWallet} secondary fullWidth>
+                Connect Wallet
+              </Button>
+            ) : (
+              <TextInput
+                onChange={handleChange('walletAddress')}
+                onBlur={handleBlur('walletAddress')}
+                value={values.walletAddress}
+                disabled={action === 'sell'}
+                placeholder="0x... or .eth"
+                type="text"
+                fullWidth
+              />
+            )}
             {errors.walletAddress && (
               <>
                 <Spacer height={4} />
