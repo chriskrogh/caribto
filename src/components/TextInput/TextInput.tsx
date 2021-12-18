@@ -20,7 +20,7 @@ const Input = styled.input`
   border: none;
   background: none;
   margin: 0;
-  color: white;
+  color: ${({ disabled }) => (disabled ? 'rgba(255, 255, 255, 0.5)' : 'white')};
 
   // from p
   font-family: Jost;
