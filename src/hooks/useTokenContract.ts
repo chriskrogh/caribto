@@ -44,7 +44,9 @@ export const useTokenContract = (): HookReturn => {
 
   const mintTokens = async (address: string, amount: BigNumber) => {
     setLoading(true);
-    const contract = buildTokenContract(new ethers.providers.JsonRpcProvider());
+    const contract = buildTokenContract(
+      new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL),
+    );
     const mintTransaction = await contract.mint(address, amount);
     await mintTransaction.wait();
     if (mintTransaction.blockHash) {
