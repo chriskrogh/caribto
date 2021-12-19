@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "blockchain",
+      "path": "./packages/blockchain"
+    },
+    {
+      "name": "client",
+      "path": "./packages/client"
+    },
+    {
+      "name": "server",
+      "path": "./packages/server"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "javascript.validate.enable": false,
+    "editor.formatOnSave": true
+  }
+}

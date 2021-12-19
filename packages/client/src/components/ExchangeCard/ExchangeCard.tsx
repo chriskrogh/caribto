@@ -1,6 +1,6 @@
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers } from 'ethers';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Web3Modal from 'web3modal';
@@ -89,7 +89,10 @@ const ExchangeCard: React.FC = () => {
 
   const initialFormValues: FormValues = { amount: '', walletAddress: address };
 
-  const submit = async (values: FormValues, { resetForm }) => {
+  const submit = async (
+    values: FormValues,
+    { resetForm }: FormikHelpers<FormValues>,
+  ) => {
     const { amount, walletAddress } = values;
     const formattedAmount = ethers.utils.parseEther(amount.toString());
     try {
@@ -104,7 +107,7 @@ const ExchangeCard: React.FC = () => {
           await burnTokens(provider, walletAddress, formattedAmount);
         }
       }
-      resetForm(initialFormValues);
+      resetForm({ values: initialFormValues });
     } catch (error) {
       console.error(error);
     }

@@ -1,14 +1,14 @@
 import { BigNumber, ethers } from 'ethers';
 import { useState } from 'react';
 
-import TokenArtifact from '../../artifacts/contracts/Token.sol/Token.json';
-import { Token as TokenContract } from '../../generated/Token';
+import TokenArtifact from '../../../blockchain/artifacts/contracts/Token.sol/Token.json';
+import { Token as TokenContract } from '../../../blockchain/generated/Token';
 
 const buildTokenContract = (
   provider: ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider,
-): TokenContract | undefined =>
+): TokenContract =>
   new ethers.Contract(
-    process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
+    process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS ?? '',
     TokenArtifact.abi,
     provider.getSigner(),
   ) as TokenContract;
