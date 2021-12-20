@@ -20,6 +20,11 @@
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
     "javascript.validate.enable": false,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "eslint.workingDirectories": [
+      "./packages/client",
+      "./packages/server",
+      "./packages/blockchain"
+    ]
   }
 }
