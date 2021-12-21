@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { BigNumber, ethers } from 'ethers';
 import { useState } from 'react';
 
@@ -5,7 +6,7 @@ import TokenArtifact from '../../../blockchain/artifacts/contracts/Token.sol/Tok
 import { Token as TokenContract } from '../../../blockchain/generated/Token';
 
 const buildTokenContract = (
-  provider: ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider,
+  provider: ethers.providers.Web3Provider,
 ): TokenContract =>
   new ethers.Contract(
     process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS ?? '',
@@ -14,7 +15,7 @@ const buildTokenContract = (
   ) as TokenContract;
 
 type HookReturn = {
-  mintTokens: (address: string, amount: BigNumber) => Promise<void>;
+  mintTokens: (address: string, amount: number) => Promise<void>;
   requestApproval: (
     provider: ethers.providers.Web3Provider,
     address: string,
@@ -42,15 +43,19 @@ export const useTokenContract = (): HookReturn => {
     }, 5000);
   };
 
-  const mintTokens = async (address: string, amount: BigNumber) => {
+  const mintTokens = async (address: string, amount: number) => {
     setLoading(true);
-    const contract = buildTokenContract(
-      new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL),
-    );
-    const mintTransaction = await contract.mint(address, amount);
-    await mintTransaction.wait();
-    if (mintTransaction.blockHash) {
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/token/mint` ?? '',
+        {
+          address,
+          amount,
+        },
+      );
       handleSuccess();
+    } catch (error) {
+      console.error(error);
     }
     setLoading(false);
   };

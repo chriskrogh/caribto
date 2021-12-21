@@ -9,13 +9,14 @@ import { APIRouter } from './routers';
 const main = async () => {
   const app = express();
 
+  app.use(express.json());
   app.use(cors(corsOptions));
 
   app.use('/api', APIRouter);
 
   const PORT = process.env.PORT ?? 4000;
   app.listen(PORT, () => {
-    console.log(`Running GraphQL server on port ${PORT}`);
+    console.log(`Running server on port ${PORT}`);
   });
 };
 

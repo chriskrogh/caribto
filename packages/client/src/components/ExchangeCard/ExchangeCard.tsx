@@ -94,13 +94,14 @@ const ExchangeCard: React.FC = () => {
     { resetForm }: FormikHelpers<FormValues>,
   ) => {
     const { amount, walletAddress } = values;
-    const formattedAmount = ethers.utils.parseEther(amount.toString());
     try {
       if (action === 'buy') {
-        await mintTokens(walletAddress, formattedAmount);
+        await mintTokens(walletAddress, parseFloat(amount));
       } else if (action === 'sell') {
         const provider = await connectWallet();
         if (!provider) throw new Error();
+
+        const formattedAmount = ethers.utils.parseEther(amount.toString());
         if (!approved) {
           await requestApproval(provider, walletAddress, formattedAmount);
         } else {
