@@ -34,12 +34,7 @@ TokenRouter.post(
 
       const mintTransaction = await contract.mint(address, formattedAmount);
       await mintTransaction.wait();
-
-      if (mintTransaction.blockHash) {
-        res.send();
-      } else {
-        res.status(400).send();
-      }
+      res.send();
     } catch (error) {
       next(error);
     }
