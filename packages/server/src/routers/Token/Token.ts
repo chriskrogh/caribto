@@ -18,10 +18,18 @@ TokenRouter.post(
       const { address, amount } = req.body;
       const formattedAmount = ethers.utils.parseEther(amount.toString());
 
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.RPC_URL,
+      );
+      const wallet = new ethers.Wallet(
+        process.env.WALLET_PRIVATE_KEY ?? '',
+        provider,
+      );
+
       const contract = new ethers.Contract(
         process.env.TOKEN_CONTRACT_ADDRESS ?? '',
         TokenArtifact.abi,
-        new ethers.providers.JsonRpcProvider(process.env.RPC_URL).getSigner(),
+        wallet,
       ) as TokenContract;
 
       const mintTransaction = await contract.mint(address, formattedAmount);
