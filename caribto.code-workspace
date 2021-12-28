@@ -11,10 +11,6 @@
     {
       "name": "client",
       "path": "./packages/client"
-    },
-    {
-      "name": "server",
-      "path": "./packages/server"
     }
   ],
   "settings": {
@@ -25,8 +21,7 @@
       "./packages/blockchain/scripts",
       "./packages/blockchain/test",
       "./packages/client/pages",
-      "./packages/client/src",
-      "./packages/server/src"
+      "./packages/client/src"
     ]
   }
 }
