@@ -5,12 +5,12 @@
       "path": "."
     },
     {
-      "name": "blockchain",
-      "path": "./packages/blockchain"
-    },
-    {
       "name": "app",
       "path": "./packages/app"
+    },
+    {
+      "name": "blockchain",
+      "path": "./packages/blockchain"
     }
   ],
   "settings": {
