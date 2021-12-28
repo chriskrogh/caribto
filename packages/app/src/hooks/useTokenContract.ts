@@ -5,6 +5,8 @@ import { useState } from 'react';
 import TokenArtifact from '../../../blockchain/artifacts/contracts/Token.sol/Token.json';
 import { Token as TokenContract } from '../../../blockchain/generated/Token';
 
+export const SUCCESS_TIMEOUT = 5000;
+
 const buildTokenContract = (
   provider: ethers.providers.Web3Provider,
 ): TokenContract =>
@@ -40,7 +42,7 @@ export const useTokenContract = (): HookReturn => {
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
-    }, 5000);
+    }, SUCCESS_TIMEOUT);
   };
 
   const mintTokens = async (address: string, amount: number) => {

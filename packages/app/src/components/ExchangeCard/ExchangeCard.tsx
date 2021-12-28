@@ -6,7 +6,10 @@ import styled from 'styled-components';
 import Web3Modal from 'web3modal';
 
 import { WalletContext } from '../../contexts/wallet';
-import { useTokenContract } from '../../hooks/useTokenContract';
+import {
+  SUCCESS_TIMEOUT,
+  useTokenContract,
+} from '../../hooks/useTokenContract';
 import { COLORS } from '../../utils/colors';
 import Button from '../Button';
 import Clickable from '../Clickable';
@@ -15,6 +18,7 @@ import Loader from '../Loader';
 import Row from '../Row';
 import Spacer from '../Spacer';
 import TextInput from '../TextInput';
+import TimerBar from '../TimerBar';
 import Typography from '../Typography';
 import Summary from './Summary';
 import { validationSchema } from './validation';
@@ -241,13 +245,16 @@ const ExchangeCard: React.FC = () => {
       </Formik>
       {(loading || success) && (
         <>
-          <Spacer height={16} />
+          <Spacer height={32} />
           <Column alignItems="center" fullWidth>
             {loading && <Loader />}
             {success && (
-              <Typography as="p" color={COLORS.success}>
-                Your transaction was successful!
-              </Typography>
+              <>
+                <Typography as="p" color={COLORS.success}>
+                  Your transaction was successful!
+                </Typography>
+                <TimerBar duration={SUCCESS_TIMEOUT} color={COLORS.success} />
+              </>
             )}
           </Column>
         </>
