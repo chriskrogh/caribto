@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
+import { COLORS } from '../../utils/colors';
 import Typography from '../Typography';
 
 type ContainerProps = {
@@ -12,7 +13,7 @@ const Container = styled.button<ContainerProps>`
   margin: 0;
   padding: 8px 16px;
   background-color: ${({ secondary }) =>
-    secondary ? 'rgba(255, 255, 255, 0.12)' : '#0984e3'};
+    secondary ? 'rgba(255, 255, 255, 0.12)' : COLORS.primary};
   border-radius: 8px;
   cursor: pointer;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
