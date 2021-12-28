@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
