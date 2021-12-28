@@ -102,6 +102,7 @@ const ExchangeCard: React.FC = () => {
     try {
       if (action === 'buy') {
         await mintTokens(walletAddress, parseFloat(amount));
+        resetForm({ values: initialFormValues });
       } else if (action === 'sell') {
         const provider = await connectWallet();
         if (!provider) throw new Error();
@@ -111,9 +112,9 @@ const ExchangeCard: React.FC = () => {
           await requestApproval(provider, walletAddress, formattedAmount);
         } else {
           await burnTokens(provider, walletAddress, formattedAmount);
+          resetForm({ values: initialFormValues });
         }
       }
-      resetForm({ values: initialFormValues });
     } catch (error) {
       console.error(error);
     }
@@ -158,6 +159,7 @@ const ExchangeCard: React.FC = () => {
               onChange={handleChange('amount')}
               onBlur={handleBlur('amount')}
               value={values.amount}
+              disabled={approved}
               placeholder="0.00"
               type="number"
               fullWidth
