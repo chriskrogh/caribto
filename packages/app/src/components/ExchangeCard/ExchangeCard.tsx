@@ -11,11 +11,12 @@ import { COLORS } from '../../utils/colors';
 import Button from '../Button';
 import Clickable from '../Clickable';
 import Column from '../Column';
+import Loader from '../Loader';
 import Row from '../Row';
 import Spacer from '../Spacer';
-import TextInput from '../TextInput/TextInput';
+import TextInput from '../TextInput';
 import Typography from '../Typography';
-import Summary from './Summary/Summary';
+import Summary from './Summary';
 import { validationSchema } from './validation';
 
 const Container = styled(Column)`
@@ -238,13 +239,16 @@ const ExchangeCard: React.FC = () => {
           </>
         )}
       </Formik>
-      {success && (
+      {(loading || success) && (
         <>
           <Spacer height={16} />
           <Column alignItems="center" fullWidth>
-            <Typography as="p" color={COLORS.success}>
-              Your transaction was successful!
-            </Typography>
+            {loading && <Loader />}
+            {success && (
+              <Typography as="p" color={COLORS.success}>
+                Your transaction was successful!
+              </Typography>
+            )}
           </Column>
         </>
       )}
