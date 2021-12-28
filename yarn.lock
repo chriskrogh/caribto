@@ -1446,9 +1446,9 @@
     "@walletconnect/window-metadata" "1.0.0"
     detect-browser "5.2.0"
 
-"@walletconnect/client@^1.7.0":
+"@walletconnect/app@^1.7.0":
   version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@walletconnect/client/-/client-1.7.0.tgz#f656952a23367cc4890ca16cc3f10ee7dabb2f03"
+  resolved "https://registry.yarnpkg.com/@walletconnect/app/-/app-1.7.0.tgz#f656952a23367cc4890ca16cc3f10ee7dabb2f03"
   integrity sha512-56aXK9Rb30cHhl4DMaUakz/3KG3Mr+/9h2iCvKDqAxmIeD931ahMZlBu86T7hGf4vboisZZEhj8/ZwiAM4Ukvg==
   dependencies:
     "@walletconnect/core" "^1.7.0"
@@ -1586,7 +1586,7 @@
   resolved "https://registry.yarnpkg.com/@walletconnect/web3-provider/-/web3-provider-1.7.0.tgz#14d67a75555547205e9fd916a7142b1f951a143e"
   integrity sha512-tX0nKVJAs1jrRmFAP8nv1h27ZttWQ/4pOW8hkH32JIB76zbsncdUOjHpnzpzgXrzMyrCzfeXeZ8dbdW4jS1KDw==
   dependencies:
-    "@walletconnect/client" "^1.7.0"
+    "@walletconnect/app" "^1.7.0"
     "@walletconnect/http-connection" "^1.7.0"
     "@walletconnect/qrcode-modal" "^1.7.0"
     "@walletconnect/types" "^1.7.0"

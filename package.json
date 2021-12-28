@@ -2,7 +2,7 @@
   "name": "caribto",
   "private": true,
   "scripts": {
-    "build": "yarn workspace @caribto/blockchain compile && yarn workspace @caribto/client build"
+    "build": "yarn workspace @caribto/blockchain compile && yarn workspace @caribto/app build"
   },
   "workspaces": {
     "packages": [
