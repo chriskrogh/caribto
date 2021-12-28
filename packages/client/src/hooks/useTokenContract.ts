@@ -46,13 +46,7 @@ export const useTokenContract = (): HookReturn => {
   const mintTokens = async (address: string, amount: number) => {
     setLoading(true);
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/token/mint` ?? '',
-        {
-          address,
-          amount,
-        },
-      );
+      await axios.get(`/api/token/mint?address=${address}&amount=${amount}`);
       handleSuccess();
     } catch (error) {
       console.error(error);
