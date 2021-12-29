@@ -2,8 +2,6 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
-import Header from '../src/components/Header';
-import Page from '../src/components/Page';
 import Spacer from '../src/components/Spacer';
 import { useIsMobile } from '../src/utils/isMobile';
 
@@ -19,15 +17,12 @@ const Home: NextPage = () => {
         <title>Caribto</title>
         <meta
           name="description"
-          content="Fiat on/off ramp aggregator in the Caribbean"
+          content="Caribto is a fiat on/off ramp platform for the Caribbean. It allows you to purchase crypto using your local island currency."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page>
-        <Header />
-        <Spacer height={isMobile ? 32 : 16} />
-        {isMobile ? <DynamicMobileSection /> : <DynamicDesktopSection />}
-      </Page>
+      <Spacer height={isMobile ? 32 : 16} />
+      {isMobile ? <DynamicMobileSection /> : <DynamicDesktopSection />}
     </>
   );
 };
