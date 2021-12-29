@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
-import Spacer from '../src/components/Spacer';
 import { useIsMobile } from '../src/utils/isMobile';
 
 const DynamicMobileSection = dynamic(() => import('./landing/Mobile'));
@@ -21,7 +20,6 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Spacer height={isMobile ? 32 : 16} />
       {isMobile ? <DynamicMobileSection /> : <DynamicDesktopSection />}
     </>
   );
