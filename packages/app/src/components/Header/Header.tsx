@@ -11,8 +11,12 @@ import Typography from '../Typography';
 const IMAGE_SIZE = 32;
 
 const Container = styled(Row)`
-  padding: 16px 16px 0;
+  padding: 16px 32px 0;
   flex: 0 1 ${IMAGE_SIZE}px;
+
+  @media screen and (max-width: 800px) {
+    padding: 16px 16px 0;
+  }
 `;
 
 const LogoContainer = styled.button`
