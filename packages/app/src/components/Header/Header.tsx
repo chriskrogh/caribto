@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -14,15 +15,23 @@ const Container = styled(Row)`
   flex: 0 1 ${IMAGE_SIZE}px;
 `;
 
-const ClickableRow = styled(Row)`
+const LogoContainer = styled.button`
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
   cursor: pointer;
 `;
 
 const Header: React.FC = () => {
+  const { pathname } = useRouter();
+
+  const isOnAboutPage = pathname === '/about';
+
   return (
     <Container justifyContent="space-between" alignItems="center">
       <Link href="/">
-        <ClickableRow>
+        <LogoContainer>
           <Image
             src="/assets/palm-tree-small.png"
             width={IMAGE_SIZE}
@@ -31,10 +40,12 @@ const Header: React.FC = () => {
           />
           <Spacer width={16} />
           <Typography as="h4">Caribto</Typography>
-        </ClickableRow>
+        </LogoContainer>
       </Link>
       <Link href="/about">
-        <Typography as="a">About</Typography>
+        <Typography as="a" secondary={!isOnAboutPage} underline={isOnAboutPage}>
+          About
+        </Typography>
       </Link>
     </Container>
   );
