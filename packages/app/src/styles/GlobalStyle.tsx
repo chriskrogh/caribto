@@ -36,12 +36,15 @@ const GlobalStyle = createGlobalStyle`
     line-height: 30px;
     letter-spacing: 0.5;
   }
-  p {
+  p, a {
     font-family: Jost;
     font-size: 18px;
     font-weight: 300;
     line-height: 28px;
     letter-spacing: 0.25;
+  }
+  a {
+    cursor: pointer;
   }
 `;
 
