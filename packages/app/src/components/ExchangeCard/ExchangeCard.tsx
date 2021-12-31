@@ -121,21 +121,21 @@ const ExchangeCard: React.FC = () => {
   };
 
   /** User should be able to choose these */
-  const currentCurrency = action === 'buy' ? 'TTD' : 'TTC';
-  const desiredCurrency = action === 'buy' ? 'TTC' : 'TTD';
+  const currentCurrency = action === 'buy' ? 'TTD' : 'TTDC';
+  const desiredCurrency = action === 'buy' ? 'TTDC' : 'TTD';
 
   return (
     <Container>
       <Row>
         <Clickable onClick={setBuy}>
           <Typography as="h4" secondary={action === 'sell'} bold>
-            Buy TTC
+            Buy TTDC
           </Typography>
         </Clickable>
         <Spacer width={16} />
         <Clickable onClick={setSell}>
           <Typography as="h4" secondary={action === 'buy'} bold>
-            Sell TTC
+            Sell TTDC
           </Typography>
         </Clickable>
       </Row>

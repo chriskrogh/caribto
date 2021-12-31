@@ -15,7 +15,7 @@ async function main() {
 
   // We get the contract to deploy
   const Token = await ethers.getContractFactory('Token');
-  const token = await Token.deploy('T&T Coin', 'TTC');
+  const token = await Token.deploy('Trinidad and Tobago Dollar Coin', 'TTDC');
 
   await token.deployed();
 

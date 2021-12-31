@@ -1,6 +1,6 @@
 export type FiatCurrency = 'TTD';
 
-export type CryptoCurrency = 'TTC';
+export type CryptoCurrency = 'TTDC';
 
 export type Currency = FiatCurrency | CryptoCurrency;
 
