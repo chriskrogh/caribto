@@ -27,7 +27,7 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> &
 const Button: React.FC<Props> = ({ children, ...props }) => {
   return (
     <Container {...props}>
-      <Typography as="h5" bold secondary={props.disabled}>
+      <Typography as="p" bold secondary={props.disabled}>
         {children}
       </Typography>
     </Container>
