@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import EthereumChain from '../../utils/EthereumChain';
+import { useIsMobile } from '../../utils/isMobile';
+import Button from '../Button';
 import Row from '../Row';
 import Spacer from '../Spacer';
 import Typography from '../Typography';
@@ -28,9 +31,48 @@ const LogoContainer = styled.button`
 `;
 
 const Header: React.FC = () => {
+  const isMobile = useIsMobile();
+
   const { pathname } = useRouter();
 
+  const [isOnSupportedNetwork, setIsOnSupportedNetwork] = useState(
+    typeof window !== 'undefined' &&
+      window.ethereum?.networkVersion &&
+      EthereumChain.chainId ===
+        `0x${parseInt(window.ethereum.networkVersion).toString(16)}`,
+  );
+
   const isOnAboutPage = pathname === '/about';
+
+  const handleSwitchNetwork = async () => {
+    if (typeof window !== 'undefined' && window.ethereum) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: EthereumChain.chainId }],
+        });
+        setIsOnSupportedNetwork(true);
+      } catch (switchError: any) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        if (switchError.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [EthereumChain],
+            });
+            setIsOnSupportedNetwork(true);
+          } catch (addError) {
+            console.error('Error adding Ethereum chain to MetaMask', addError);
+          }
+        } else {
+          console.error(
+            'Error switching Ethereum chain in MetaMask',
+            switchError,
+          );
+        }
+      }
+    }
+  };
 
   return (
     <Container justifyContent="space-between" alignItems="center">
@@ -46,11 +88,25 @@ const Header: React.FC = () => {
           <Typography as="h4">Caribto</Typography>
         </LogoContainer>
       </Link>
-      <Link href="/about">
-        <Typography as="a" secondary={!isOnAboutPage} underline={isOnAboutPage}>
-          About
-        </Typography>
-      </Link>
+      <Row alignItems="center">
+        <Link href="/about">
+          <Typography
+            as="a"
+            secondary={!isOnAboutPage}
+            underline={isOnAboutPage}
+          >
+            About
+          </Typography>
+        </Link>
+        {!isMobile && !isOnSupportedNetwork && (
+          <>
+            <Spacer width={16} />
+            <Button onClick={handleSwitchNetwork} secondary>
+              Switch network
+            </Button>
+          </>
+        )}
+      </Row>
     </Container>
   );
 };
