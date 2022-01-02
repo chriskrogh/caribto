@@ -4,4 +4,5 @@ export type CryptoCurrency = 'TTDC';
 
 export type Currency = FiatCurrency | CryptoCurrency;
 
-export const isFiat = (currency: Currency): boolean => currency === 'TTD';
+export const isFiat = (currency: Currency): currency is FiatCurrency =>
+  currency === 'TTD';
