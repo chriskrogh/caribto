@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@walletconnect/web3-provider": "^1.7.0",
@@ -17,13 +19,22 @@
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-dropdown": "^1.9.2",
     "styled-components": "^5.3.3",
     "web3modal": "^1.9.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/builder-webpack5": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
+    "@storybook/react": "^6.4.9",
     "@types/react": "17.0.37",
     "@types/styled-components": "^5.1.17",
+    "babel-loader": "^8.2.3",
     "typescript": "4.5.2"
   }
 }
