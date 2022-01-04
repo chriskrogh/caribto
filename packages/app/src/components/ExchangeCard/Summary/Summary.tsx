@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Currency } from '../../../utils/Currency';
+import { Currency, TTD } from '../../../utils/Currency';
 import Column from '../../Column';
 import LineItem from './LineItem';
 
@@ -18,7 +18,7 @@ const Summary: React.FC<Props> = ({
   /** This should be pulled from somwehere */
   const processingFee: { amount: number; currency: Currency } = {
     amount: 0,
-    currency: 'TTD',
+    currency: TTD,
   };
 
   /** This should be determined based on the
@@ -31,7 +31,7 @@ const Summary: React.FC<Props> = ({
   return (
     <Column fullWidth>
       <LineItem
-        title={`${desiredCurrency} price`}
+        title={`${desiredCurrency.symbol} price`}
         amount={price}
         currency={currentCurrency}
       />

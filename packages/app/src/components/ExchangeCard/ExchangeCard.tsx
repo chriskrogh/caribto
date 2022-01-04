@@ -1,7 +1,9 @@
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import copy from 'copy-to-clipboard';
 import { ethers } from 'ethers';
 import { Formik, FormikHelpers } from 'formik';
 import React, { useContext, useState } from 'react';
+import { Option } from 'react-dropdown';
 import styled from 'styled-components';
 import Web3Modal from 'web3modal';
 
@@ -11,9 +13,11 @@ import {
   useTokenContract,
 } from '../../hooks/useTokenContract';
 import { COLORS } from '../../utils/colors';
+import { Country, CurrencyPairs } from '../../utils/Currency';
 import Button from '../Button';
 import Clickable from '../Clickable';
 import Column from '../Column';
+import Dropdown from '../Dropdown';
 import Loader from '../Loader';
 import Row from '../Row';
 import Spacer from '../Spacer';
@@ -41,6 +45,14 @@ const ConnectedDot = styled.div`
   height: ${DOT_SIZE}px;
   border-radius: 50%;
   background-color: ${COLORS.success};
+`;
+
+const LeanButton = styled.button`
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 `;
 
 type FormValues = {
@@ -79,6 +91,17 @@ const ExchangeCard: React.FC = () => {
   const { address } = useContext(WalletContext);
 
   const [action, setAction] = useState<'buy' | 'sell'>('buy');
+  const [country, setCountry] = useState<Country>('TT');
+  const [copied, setCopied] = useState(false);
+
+  const handleCountryChange = (option: Option) =>
+    setCountry(option.value as Country);
+
+  const handleCopy = () => {
+    copy(CurrencyPairs[country].crypto.contractAddress);
+    setCopied(true);
+    setTimeout(() => setCopied(false), SUCCESS_TIMEOUT);
+  };
 
   const setBuy = () => setAction('buy');
   const setSell = () => setAction('sell');
@@ -92,7 +115,10 @@ const ExchangeCard: React.FC = () => {
     success,
   } = useTokenContract();
 
-  const initialFormValues: FormValues = { amount: '', walletAddress: address };
+  const initialFormValues: FormValues = {
+    amount: '',
+    walletAddress: address,
+  };
 
   const submit = async (
     values: FormValues,
@@ -120,22 +146,23 @@ const ExchangeCard: React.FC = () => {
     }
   };
 
-  /** User should be able to choose these */
-  const currentCurrency = action === 'buy' ? 'TTD' : 'TTDC';
-  const desiredCurrency = action === 'buy' ? 'TTDC' : 'TTD';
+  const [currentCurrency, desiredCurrency] =
+    action === 'buy'
+      ? [CurrencyPairs[country].fiat, CurrencyPairs[country].crypto]
+      : [CurrencyPairs[country].crypto, CurrencyPairs[country].fiat];
 
   return (
     <Container>
       <Row>
         <Clickable onClick={setBuy}>
           <Typography as="h4" secondary={action === 'sell'} bold>
-            Buy TTDC
+            Buy {CurrencyPairs[country].crypto.symbol}
           </Typography>
         </Clickable>
         <Spacer width={16} />
         <Clickable onClick={setSell}>
           <Typography as="h4" secondary={action === 'buy'} bold>
-            Sell TTDC
+            Sell {CurrencyPairs[country].crypto.symbol}
           </Typography>
         </Clickable>
       </Row>
@@ -149,9 +176,34 @@ const ExchangeCard: React.FC = () => {
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <>
             <Row justifyContent="space-between" fullWidth>
+              <Typography as="p">Currency</Typography>
+              {!copied ? (
+                <LeanButton onClick={handleCopy}>
+                  <Typography as="p" secondary>
+                    Copy contract address
+                  </Typography>
+                </LeanButton>
+              ) : (
+                <Typography as="p" color={COLORS.success}>
+                  Copied
+                </Typography>
+              )}
+            </Row>
+            <Spacer height={4} />
+            <Dropdown
+              options={Object.keys(CurrencyPairs).map((key) => ({
+                label: CurrencyPairs[key as Country].crypto.symbol,
+                value: key,
+              }))}
+              onChange={handleCountryChange}
+              value={CurrencyPairs[country].crypto.symbol}
+              fullWidth
+            />
+            <Spacer height={16} />
+            <Row justifyContent="space-between" fullWidth>
               <Typography as="p">Amount</Typography>
               <Typography as="p">
-                {desiredCurrency}/{currentCurrency}
+                {desiredCurrency.symbol}/{currentCurrency.symbol}
               </Typography>
             </Row>
             <Spacer height={4} />
@@ -179,9 +231,7 @@ const ExchangeCard: React.FC = () => {
                 <Row alignItems="center">
                   <ConnectedDot />
                   <Spacer width={8} />
-                  <Typography as="p" secondary>
-                    Connected
-                  </Typography>
+                  <Typography as="p">Connected</Typography>
                 </Row>
               )}
             </Row>

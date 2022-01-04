@@ -19,7 +19,9 @@ const LineItem: React.FC<Props> = ({ title, amount, currency, bold }) => {
         {title}
       </Typography>
       <Typography as="p">
-        {buildFormatter(currency === 'TTDC' ? 'USD' : currency).format(amount)}
+        {buildFormatter(
+          currency.symbol === 'TTDC' ? 'USD' : currency.symbol,
+        ).format(amount)}
       </Typography>
     </Row>
   );
