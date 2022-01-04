@@ -1,5 +1,3 @@
-import './dropdown.css';
-
 import React from 'react';
 import ReactDropdown, { ReactDropdownProps } from 'react-dropdown';
 import styled from 'styled-components';
