@@ -278,7 +278,7 @@ const ExchangeCard: React.FC = () => {
                     fullWidth
                     secondary
                   >
-                    1. Approve
+                    {`1.\u00A0Approve`}
                   </Button>
                   <Spacer width={16} />
                 </>
@@ -289,7 +289,7 @@ const ExchangeCard: React.FC = () => {
                 disabled={loading || (action === 'sell' && !approved)}
                 fullWidth
               >
-                {`${action === 'sell' ? '2. ' : ''}Confirm`}
+                {`${action === 'sell' ? '2.\u00A0' : ''}Confirm`}
               </Button>
             </Row>
           </>
