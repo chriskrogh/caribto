@@ -18,3 +18,35 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+/* react-dropdown */
+.Dropdown-root {
+  display: flex;
+  flex-flow: column;
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+.Dropdown-option,
+.Dropdown-placeholder {
+  cursor: pointer;
+  font-family: Jost;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 28px;
+  letter-spacing: 0.25;
+}
+
+.Dropdown-option {
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+}
+
+.Dropdown-placeholder {
+  color: rgba(255, 255, 255);
+}
+
+.Dropdown-option.is-selected {
+  color: #0984e3;
+}
