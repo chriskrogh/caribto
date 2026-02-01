@@ -1,5 +1,5 @@
 {
-  "name": "packages",
+  "name": "@caribto/server",
   "module": "index.ts",
   "type": "module",
   "private": true,

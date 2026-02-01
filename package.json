@@ -1,5 +1,5 @@
 {
-  "name": "caribto",
+  "name": "@caribto/root",
   "private": true,
   "version": "1.0.0",
   "workspaces": [
