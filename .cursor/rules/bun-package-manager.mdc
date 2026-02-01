@@ -1,0 +1,64 @@
+---
+description: Use bun for installing dependencies and running commands
+alwaysApply: true
+---
+
+# Package Management with Bun
+
+This workspace uses **bun** as the package manager and runtime for installing dependencies and running commands.
+
+## Installation Commands
+
+Always use `bun` instead of `npm`, `yarn`, or `pnpm`:
+
+```bash
+# ✅ CORRECT
+bun install
+bun add <package>
+bun add -d <package>  # for dev dependencies
+bun remove <package>
+
+# ❌ INCORRECT
+npm install
+yarn add <package>
+pnpm install
+```
+
+## Running Scripts
+
+Use `bun` to run scripts defined in `package.json`:
+
+```bash
+# ✅ CORRECT
+bun run <script-name>
+bun run dev
+bun run build
+bun run test
+
+# ❌ INCORRECT
+npm run <script-name>
+yarn <script-name>
+pnpm run <script-name>
+```
+
+## Direct Execution
+
+Bun can also directly execute TypeScript, JavaScript, and other files:
+
+```bash
+# ✅ CORRECT
+bun <file.ts>
+bun <file.js>
+
+# ❌ INCORRECT
+node <file.js>
+ts-node <file.ts>
+```
+
+## When Suggesting Commands
+
+When suggesting terminal commands to install dependencies or run scripts:
+- Always use `bun` instead of other package managers
+- Use `bun install` for installing all dependencies
+- Use `bun add` for adding new packages
+- Use `bun run` for executing scripts from package.json
