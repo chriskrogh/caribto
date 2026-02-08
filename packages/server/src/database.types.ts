@@ -38,6 +38,24 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist: {
+        Row: {
+          id: string
+          created_at: string
+          email: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          email: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
