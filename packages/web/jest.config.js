@@ -23,6 +23,7 @@ const config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/app/$1",
     "^@server/(.*)$": "<rootDir>/../server/src/$1",
+    "^@shared/(.*)$": "<rootDir>/../shared/src/$1",
   },
   moduleDirectories: ["node_modules", "<rootDir>/../../node_modules"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],

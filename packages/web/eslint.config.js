@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     // Config files
     "jest.config.js",
     "jest.setup.js",
+    "postcss.config.js",
   ]),
 ]);
 

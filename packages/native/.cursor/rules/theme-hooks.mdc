@@ -1,0 +1,73 @@
+---
+description: Theme hooks for dark/light mode styling in React Native components
+alwaysApply: false
+---
+
+# Theme Hooks
+
+Use the theme hooks from `@/lib/theme/hooks` and `@/lib/theme/context` for all theme-aware styling. Never hardcode color values.
+
+## When to Use Each Hook
+
+### `useThemeColor()` - For Raw Color Values
+
+Use when you need an actual hex color value (e.g., icon `color` props, chart colors, or any component API that requires a color string):
+
+```tsx
+import { useThemeColor } from "@/lib/theme/hooks";
+
+const getThemeColor = useThemeColor();
+const iconColor = getThemeColor("foreground");
+const destructiveColor = getThemeColor("destructive");
+
+<Icon color={iconColor} />;
+```
+
+Available color names: `background`, `foreground`, `card`, `card-foreground`, `primary`, `primary-foreground`, `secondary`, `secondary-foreground`, `muted`, `muted-foreground`, `accent`, `accent-foreground`, `success`, `destructive`, `destructive-foreground`, `border`, `input`, `ring`, `chart`.
+
+### `useThemeColorClassName()` - For NativeWind Classes
+
+Use when applying Tailwind/NativeWind class names that need theme awareness:
+
+```tsx
+import { useThemeColorClassName } from "@/lib/theme/hooks";
+
+const getThemeColor = useThemeColorClassName();
+
+<View className={getThemeColor("bg-background")} />
+<Text className={getThemeColor("text-foreground")} />
+```
+
+Available class mappings: `bg-background`, `text-foreground`, `text-background`, `bg-card`, `text-card-foreground`, `bg-primary`, `text-primary`, `text-primary-foreground`, `bg-secondary`, `text-secondary-foreground`, `bg-muted`, `text-muted-foreground`, `bg-accent`, `text-accent-foreground`, `bg-destructive`, `text-destructive-foreground`, `border-border`, `bg-border`, `bg-input`, `ring-ring`, `bg-chart`.
+
+### `useThemeCn()` - For Custom Light/Dark Classes
+
+Use for custom Tailwind classes not covered by `useThemeColorClassName()`:
+
+```tsx
+import { useThemeCn } from "@/lib/theme/hooks";
+
+const tcn = useThemeCn();
+
+<View className={tcn({ light: "bg-cyan-200", dark: "bg-cyan-700" })} />;
+```
+
+### `useTheme()` - For Theme State and Conditional Logic
+
+Use when you need `isDark` for conditional rendering or when setting the theme:
+
+```tsx
+import { useTheme } from "@/lib/theme/context";
+
+const { isDark, setTheme } = useTheme();
+
+// For icon colors when useThemeColor isn't available
+const iconColor = isDark ? colors.foreground.dark : colors.foreground.DEFAULT;
+```
+
+## Preference Order
+
+1. `useThemeColorClassName()` for NativeWind classes (most common)
+2. `useThemeColor()` for raw color values (icons, charts)
+3. `useThemeCn()` for custom light/dark class pairs
+4. `useTheme()` with `isDark` only when the above don't cover your case

@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/lib/auth/store";
 import { Providers } from "@/lib/components/Providers";
 
+import "../global.css";
+
 const isWeb = process.env.EXPO_OS === "web";
 
 if (!isWeb) {
