@@ -11,11 +11,7 @@ module.exports = {
     "^@server/(.*)$": "<rootDir>/src/$1",
   },
   clearMocks: true,
-  collectCoverageFrom: [
-    "src/**/*.ts",
-    "!**/*.test.ts",
-    "!**/node_modules/**",
-  ],
+  collectCoverageFrom: ["src/**/*.ts", "!**/*.test.ts", "!**/node_modules/**"],
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov", "html", "json"],
 };
