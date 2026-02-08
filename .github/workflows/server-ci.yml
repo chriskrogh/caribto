@@ -1,0 +1,38 @@
+name: Server CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "packages/server/**"
+      - "packages/shared/**"
+      - ".github/workflows/server-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+        working-directory: packages/server
+
+      - name: Type check
+        run: bun run tsc
+        working-directory: packages/server
+
+      - name: Lint
+        run: bun run lint
+        working-directory: packages/server
+
+      - name: Test
+        run: bun run test
+        working-directory: packages/server
