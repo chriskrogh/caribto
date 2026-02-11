@@ -3,7 +3,7 @@ import { Skeleton } from "@/_components/ui/skeleton";
 
 export const CalculatorSkeleton: React.FC = () => {
   return (
-    <section className="flex w-full justify-center px-6 pb-12 sm:px-8 sm:pb-16">
+    <section className="slide-up flex w-full justify-center px-6 pb-12 sm:px-8 sm:pb-16">
       <Card className="w-full max-w-md">
         <CardContent className="flex flex-col gap-5 p-6">
           {/* "You receive" input */}
