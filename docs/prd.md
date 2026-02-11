@@ -2,19 +2,19 @@
 
 ## 1. Product Overview
 
-**Product name:** Caribto
+**Product name:** Caribto
 
-**Product type:** Fiat → Crypto onramp (consumer)
+**Product type:** Fiat → Crypto onramp (consumer)
 
-**Entity:** Canadian corporation (FINTRAC MSB)
+**Entity:** Canadian corporation (FINTRAC MSB)
 
-**Stage:** MVP
+**Stage:** MVP
 
-**Risk posture:** Low
+**Risk posture:** Low
 
-**Initial payout chain:** Base
+**Initial payout chain:** Base
 
-**Asset:** USDC
+**Asset:** USDC
 
 **Goal:** Enable Caribbean consumers to convert local fiat currency into USDC on Base through a compliant, low-friction, non-custodial experience.
 
@@ -67,7 +67,7 @@ Caribbean users face:
 ### 4.2 Purchase
 
 1. User selects fiat amount
-2. Redirect to **Stripe Link** checkout
+2. Redirect to **Stripe Link** checkout
 3. Payment confirmation
 4. Compliance checks pass
 5. USDC payout initiated
@@ -87,7 +87,7 @@ Caribbean users face:
 
 ### 5.1 Payments (Fiat Intake)
 
-- Provider: **Stripe**
+- Provider: **Stripe**
 - Payment methods:
   - Cards
   - Bank-based methods where supported
@@ -109,8 +109,8 @@ Caribbean users face:
 
 ### 5.2 Identity, KYC & AML
 
-- Provider: **Sumsub**
-- Required before *any* crypto payout
+- Provider: **Sumsub**
+- Required before _any_ crypto payout
 
 **Sumsub features used (MVP):**
 
@@ -124,24 +124,47 @@ Caribbean users face:
 
 **Design decision:**
 
-KYC is **always-on**, regardless of transaction size, to simplify compliance and reduce edge cases.
+KYC is **always-on**, regardless of transaction size, to simplify compliance and reduce edge cases.
 
 ---
 
 ### 5.3 Crypto Payouts
 
 - Asset: USDC
-- Chain: **Base**
+- Chain: **Base**
 - Custody model:
   - Non-custodial
   - User-provided wallet address
   - One-way payout only
 
+**Payout pipeline:**
+
+1. **Stripe pays out USD** to our linked bank account (standard Stripe payout schedule)
+2. **Circle Mint converts USD → USDC** — we deposit USD from our bank account into our Circle Mint account, which converts it 1:1 into USDC
+3. **Circle Crypto Payouts API sends USDC to the customer's wallet** on Base
+
+**Circle Mint details:**
+
+- Provider: **Circle** (sole issuer of USDC)
+- Product: **Circle Mint** — institutional platform for minting/redeeming USDC directly from Circle
+- Circle Mint account is free; Crypto Payouts API access requires additional solutioning with Circle
+- USD deposits from our bank account are converted 1:1 to USDC within the Circle Mint account
+- The **Crypto Payouts API** (`/v1/payouts`) handles onchain sends to customer wallets
+  - Recipient wallet addresses are registered in Circle's Address Book (`/v1/addressBook/recipients`)
+  - Payouts include Travel Rule identity data for compliance (required for payouts >= $3,000)
+  - Payout status tracked via webhooks or polling (pending → complete)
+  - Circle returns an `externalRef` (onchain transaction hash) on completion
+- Circle Mint supports Base as a payout chain for USDC
+- Sandbox environment available for integration testing
+
 **Requirements:**
 
 - Validate Base-compatible addresses
-- Generate and store transaction hash
+- Register customer wallet addresses in Circle Address Book
+- Generate and store onchain transaction hash (from Circle's `externalRef`)
 - Associate payout with Stripe payment + Sumsub applicant ID
+- Handle Circle webhook notifications for payout status updates
+- Implement retry/fallback logic for failed payouts
 
 ---
 
@@ -166,7 +189,7 @@ KYC is **always-on**, regardless of transaction size, to simplify compliance an
 ### 6.2 Security
 
 - No private key custody
-- Webhook signature verification (Stripe + Sumsub)
+- Webhook signature verification (Stripe + Sumsub + Circle)
 - Encrypted PII at rest
 - Least-privilege internal access
 
@@ -196,7 +219,7 @@ No reporting exports or advanced analytics in MVP.
 - Mobile-first
 - Minimal copy
 - No crypto jargon
-- Clear “What happens next” states
+- Clear "What happens next" states
 - Trust-forward language (compliance as a feature, not friction)
 
 If Stripe Link is the airport security, Sumsub is the passport desk. The app itself should feel like the departure lounge.
@@ -239,13 +262,15 @@ If Stripe Link is the airport security, Sumsub is the passport desk. The app its
 ## 11. Open Dependencies & Risks
 
 - Stripe crypto policy interpretation for onramps
+- Circle Mint account approval timeline (requires institutional KYC/background checks, can take weeks)
+- Circle Crypto Payouts API access and pricing (requires additional solutioning with Circle)
 - Local card acceptance reliability by market
 - ID document pass rates per country
 - Base RPC reliability at scale (low risk early)
 
 ---
 
-## 12. MVP Definition of “Done”
+## 12. MVP Definition of "Done"
 
 Caribto MVP is complete when:
 
@@ -260,4 +285,4 @@ Caribto MVP is complete when:
 
 Important:
 
-[Mobile Considerations](https://www.notion.so/Mobile-Considerations-2fa453d83dae80c28cbac2ce4d0b6fe6?pvs=21)
+[Mobile Considerations](./mobile-considerations.md)
