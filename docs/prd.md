@@ -42,9 +42,31 @@ Caribbean users face:
 **Primary user**
 
 - Individual consumer
-- Resident of Trinidad & Tobago, Barbados, or Jamaica
+- Resident of a supported Caribbean country (see Supported Countries below)
 - Owns a self-custodial wallet (e.g. MetaMask, Coinbase Wallet)
 - Wants USD exposure or crypto access without complexity
+
+**Supported Countries (MVP)**
+
+| Code | Country | Currency |
+|------|---------|----------|
+| TT | Trinidad & Tobago | TTD |
+| BB | Barbados | BBD |
+| JM | Jamaica | JMD |
+| BS | The Bahamas | BSD |
+| AG | Antigua & Barbuda | XCD |
+| DM | Dominica | XCD |
+| GD | Grenada | XCD |
+| KN | Saint Kitts & Nevis | XCD |
+| LC | Saint Lucia | XCD |
+| VC | Saint Vincent & Grenadines | XCD |
+| AI | Anguilla | XCD |
+| MS | Montserrat | XCD |
+| AW | Aruba | AWG |
+| CW | Curaçao | XCG |
+| SX | Sint Maarten | XCG |
+
+All Caribbean countries supported by Stripe are included.
 
 **Explicitly out of scope (MVP)**
 
@@ -274,7 +296,7 @@ If Stripe Link is the airport security, Sumsub is the passport desk. The app its
 
 Caribto MVP is complete when:
 
-- A user in T&T, Barbados, or Jamaica can
+- A user in any supported Caribbean country can
 - Pay with local fiat via Stripe
 - Complete Sumsub KYC
 - Receive USDC on Base
