@@ -1,9 +1,7 @@
-import { createClient } from "@server/utils/supabase";
+import { supabaseAdmin } from "@server/utils/supabase";
 
 export const joinWaitlist = async (email: string) => {
-  const supabase = await createClient();
-
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("waitlist")
     .upsert({ email }, { onConflict: "email" })
     .select()

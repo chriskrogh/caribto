@@ -19,7 +19,7 @@ const FAQS = [
   {
     question: "Which currencies can I pay with?",
     answer:
-      "You can pay with Trinidad and Tobago Dollars (TTD), Barbados Dollars (BBD), or Jamaican Dollars (JMD) using your local debit or credit card. No need to convert to USD first — we handle the exchange for you.",
+      "You can pay with Trinidad and Tobago Dollars (TTD), Barbados Dollars (BBD), Jamaican Dollars (JMD), Bahamian Dollars (BSD), Eastern Caribbean Dollars (XCD), Aruban Florin (AWG), or Caribbean Guilder (XCG) using your local debit or credit card. No need to convert to USD first — we handle the exchange for you.",
   },
   {
     question: "How long does a transaction take?",

@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
         rel="noopener noreferrer"
         className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
       >
-        a <VingsLogo className="h-4 w-auto" /> Vings product
+        powered by <VingsLogo className="h-4 w-auto" /> Vings
       </Link>
     </div>
   );

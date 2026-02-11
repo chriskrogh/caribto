@@ -33,7 +33,10 @@ const CURRENCIES = [
   { code: "TTD", label: "TTD - Trinidad & Tobago Dollar" },
   { code: "BBD", label: "BBD - Barbados Dollar" },
   { code: "JMD", label: "JMD - Jamaican Dollar" },
-  { code: "USD", label: "USD - US Dollar" },
+  { code: "BSD", label: "BSD - Bahamian Dollar" },
+  { code: "XCD", label: "XCD - Eastern Caribbean Dollar" },
+  { code: "AWG", label: "AWG - Aruban Florin" },
+  { code: "XCG", label: "XCG - Caribbean Guilder" },
 ] as const;
 
 const formatNumber = (value: number): string => {
@@ -71,15 +74,17 @@ const FeeLabel: React.FC<{ feePercent: number }> = ({ feePercent }) => {
 
 type Props = {
   quotes: Record<string, number>;
-  defaultCurrency: CurrencyCode;
+  defaultCurrency: CurrencyCode | undefined;
 };
 
 export const Form: React.FC<Props> = ({ quotes, defaultCurrency }) => {
-  const [currency, setCurrency] = useState<CurrencyCode>(defaultCurrency);
+  const [currency, setCurrency] = useState<CurrencyCode | undefined>(
+    defaultCurrency,
+  );
   const [amount, setAmount] = useState("100");
 
   const exchangeRate = useMemo(() => {
-    if (currency === "USD") return 1;
+    if (!currency) return null;
     const rateKey = `USD-${currency}`;
     return quotes[rateKey] ?? null;
   }, [currency, quotes]);
@@ -133,11 +138,11 @@ export const Form: React.FC<Props> = ({ quotes, defaultCurrency }) => {
             Your currency
           </Typography>
           <Select
-            value={currency}
+            value={currency ?? ""}
             onValueChange={(val) => setCurrency(val as CurrencyCode)}
           >
             <SelectTrigger>
-              <SelectValue />
+              <SelectValue placeholder="Select currency" />
             </SelectTrigger>
             <SelectContent>
               {CURRENCIES.map((c) => (
@@ -153,7 +158,7 @@ export const Form: React.FC<Props> = ({ quotes, defaultCurrency }) => {
           <div className="flex items-center justify-between text-muted-foreground">
             <span>Exchange rate</span>
             <span>
-              {exchangeRate !== null
+              {exchangeRate !== null && currency
                 ? `1 USD = ${formatNumber(exchangeRate)} ${currency}`
                 : "—"}
             </span>
@@ -163,7 +168,7 @@ export const Form: React.FC<Props> = ({ quotes, defaultCurrency }) => {
               feePercent={breakdown?.feePercent ?? HIGH_FEE_RATE * 100}
             />
             <span>
-              {breakdown
+              {breakdown && currency
                 ? `${formatNumber(breakdown.feeLocal)} ${currency}`
                 : "—"}
             </span>
@@ -179,7 +184,7 @@ export const Form: React.FC<Props> = ({ quotes, defaultCurrency }) => {
               {breakdown ? formatNumber(breakdown.totalLocal) : "0.00"}
             </span>
             <span className="text-sm font-medium text-muted-foreground">
-              {currency}
+              {currency ?? "—"}
             </span>
           </div>
         </div>
